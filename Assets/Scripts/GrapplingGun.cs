@@ -9,7 +9,9 @@ public class GrapplingGun : MonoBehaviour
 
     private bool canGapple;
 
-    public Transform gunTip, cam, player;
+    public Transform gunTip;
+    public Transform cam;
+    public Transform player;
 
     private float maxDistance = 100f;
     private SpringJoint joint;
@@ -49,8 +51,10 @@ public class GrapplingGun : MonoBehaviour
 
     void StartGrapple()
     {
-        if (joint != null) return; 
+        if (joint != null) return;
 
+        if (canGapple)
+        {
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, maxDistance))
             {
@@ -71,6 +75,7 @@ public class GrapplingGun : MonoBehaviour
 
                 lr.positionCount = 2;
             }
+        }
     }
 
         void DrawRope()

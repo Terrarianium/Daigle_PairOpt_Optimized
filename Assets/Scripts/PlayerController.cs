@@ -5,7 +5,9 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody rb;
     public GameObject camHolder;
-    public float speed, sensitivity, maxForce;
+    public float speed;
+    public float sensitivity;
+    public float maxForce;
     private Vector2 move, look;
     private float lookRotation;
 
