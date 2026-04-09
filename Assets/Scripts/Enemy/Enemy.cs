@@ -1,14 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Pool;
 
 public class Enemy : MonoBehaviour
 {
     [Range(0, 50)][SerializeField] float attackRange = 2, sightRange = 20, timeBetweenAttacks = 3;
     [Range(0, 20)][SerializeField] int atkDamage = 5;
 
-    [SerializeField] NavMeshAgent navEnemy;
+    private NavMeshAgent navEnemy;
     private Transform playerPos;
     private bool isAttacking;
 
@@ -16,34 +15,17 @@ public class Enemy : MonoBehaviour
     [SerializeField] PlayerController playerController;
     public GameObject bullet;
 
-    private IObjectPool<Enemy> enemyPool;
-
-    public void SetPool(IObjectPool<Enemy> pool)
-    {
-        enemyPool = pool;
-    }
-
     private enum EnemyState
     {
         Chase,
         Attack,
-        Idle,
-        Dead
+        Idle
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        if (navEnemy == null)
-            navEnemy = GetComponent<NavMeshAgent>();
-
-        if (playerController == null)
-            playerController = FindObjectOfType<PlayerController>();
-
+        navEnemy = GetComponent<NavMeshAgent>();
         playerPos = playerController.transform;
-
-        isAttacking = false;
-
-        navEnemy.isStopped = false;
     }
 
     private void Update()
@@ -63,17 +45,11 @@ public class Enemy : MonoBehaviour
 
             case EnemyState.Attack:
                 navEnemy.isStopped = true;
-                if (!isAttacking)
-                    StartCoroutine(AttackPlayer());
+                StartCoroutine(AttackPlayer());
                 break;
 
             case EnemyState.Idle:
                 navEnemy.isStopped = true;
-                break;
-
-            case EnemyState.Dead:
-                Debug.Log("I am dead");
-                enemyPool.Release(this);
                 break;
         }
     }
@@ -81,7 +57,7 @@ public class Enemy : MonoBehaviour
     private EnemyState GetState(float distance)
     {
         if (health.isDead)
-            return EnemyState.Dead;
+            return EnemyState.Idle;
 
         if (distance <= attackRange && !isAttacking)
             return EnemyState.Attack;
@@ -95,6 +71,14 @@ public class Enemy : MonoBehaviour
     private void ChasePlayer()
     {
         navEnemy.SetDestination(playerPos.position);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            health.TakeDamage(5);
+        }
     }
 
     private IEnumerator AttackPlayer()

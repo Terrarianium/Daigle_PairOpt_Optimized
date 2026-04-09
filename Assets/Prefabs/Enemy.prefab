@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2548144191586129405}
   - component: {fileID: 6451740677091599676}
   - component: {fileID: 4539793960890027306}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -109,11 +109,9 @@ MonoBehaviour:
   attackRange: 5
   sightRange: 20
   timeBetweenAttacks: 3
-  atkDamage: 5
-  navEnemy: {fileID: 4539793960890027306}
-  health: {fileID: 7383203430006434013, guid: df53d06d4c66da047a68ef87918dc743, type: 3}
-  playerController: {fileID: 101479877315074600, guid: df53d06d4c66da047a68ef87918dc743, type: 3}
-  bullet: {fileID: 4840808950779090832, guid: 1428895bade070e4d986a44ccbd2c515, type: 3}
+  atkDamage: 0
+  health: {fileID: 0}
+  playerController: {fileID: 0}
 --- !u!114 &6300461865296284695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +142,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
