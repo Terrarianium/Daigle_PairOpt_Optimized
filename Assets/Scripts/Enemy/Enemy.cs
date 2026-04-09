@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private Transform playerPos;
     private bool isAttacking;
 
-    [SerializeField] Health health;
+    private Health health;
     [SerializeField] PlayerController playerController;
     public GameObject bullet;
 
@@ -19,7 +19,13 @@ public class Enemy : MonoBehaviour
     {
         Chase,
         Attack,
-        Idle
+        Idle,
+        Death
+    }
+
+    private void Awake()
+    {
+        health = GetComponent<Health>();
     }
 
     private void Start()
@@ -51,13 +57,18 @@ public class Enemy : MonoBehaviour
             case EnemyState.Idle:
                 navEnemy.isStopped = true;
                 break;
+
+            case EnemyState.Death:
+                Debug.Log("I am Dead makdfad");
+                Destroy(gameObject);
+                break;
         }
     }
 
     private EnemyState GetState(float distance)
     {
         if (health.isDead)
-            return EnemyState.Idle;
+            return EnemyState.Death;
 
         if (distance <= attackRange && !isAttacking)
             return EnemyState.Attack;
@@ -75,8 +86,11 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Hit by: " + other.name);
+
         if (other.CompareTag("Bullet"))
         {
+            Debug.Log("Bullet hit enemy");
             health.TakeDamage(5);
         }
     }

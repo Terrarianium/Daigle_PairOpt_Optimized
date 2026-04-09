@@ -30,6 +30,7 @@ public class Bullet : MonoBehaviour
         lifeTimer = destroyTime;
 
         // Fire forward
+        //rb.linearVelocity = transform.forward * speed;
         rb.linearVelocity = transform.forward * speed;
     }
 
