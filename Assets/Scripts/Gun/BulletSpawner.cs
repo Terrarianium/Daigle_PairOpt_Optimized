@@ -9,7 +9,9 @@ public class BulletSpawner : MonoBehaviour
     void Start()
     {
         gun = GetComponent<Gun>();
-        _pool = new ObjectPool<Bullet>(CreateBullet, OnTakeBulletFromPool, OnReturnBulletToPool, OnDestroyBullet, true, 100, 1000);
+        _pool = new ObjectPool<Bullet>(CreateBullet, OnTakeBulletFromPool, OnReturnBulletToPool, OnDestroyBullet, true, 100, 200);
+
+        InitiateBullets(30);
     }
 
     private Bullet CreateBullet()
@@ -26,12 +28,16 @@ public class BulletSpawner : MonoBehaviour
         bullet.transform.position = gun.spawnPoint.position;
         bullet.transform.right = gun.transform.right;
 
+        bullet.SetActiveState(true);
+
         //activate
         bullet.gameObject.SetActive(true);
     }
 
     private void OnReturnBulletToPool(Bullet bullet)
     {
+        bullet.SetActiveState(false);
+
         //deactivate
         bullet.gameObject.SetActive(false);
     }
@@ -39,5 +45,22 @@ public class BulletSpawner : MonoBehaviour
     private void OnDestroyBullet(Bullet bullet)
     {
         Destroy(bullet.gameObject);
+    }
+
+    void InitiateBullets(int count)
+    {
+        Bullet[] temp = new Bullet[count];
+
+        //create temp bullets
+        for (int i = 0; i < count; i++)
+        {
+            temp[i] = _pool.Get();
+        }
+
+        //remove temp bullets
+        for (int i = 0; i < count; i++)
+        {
+            _pool.Release(temp[i]);
+        }
     }
 }

@@ -11,8 +11,11 @@ GameObject:
   - component: {fileID: 8123977051955157382}
   - component: {fileID: 7638925555426856199}
   - component: {fileID: 7327467716866079305}
+  - component: {fileID: 6484037785941392889}
+  - component: {fileID: 6300461865296284695}
   - component: {fileID: 2548144191586129405}
   - component: {fileID: 6451740677091599676}
+  - component: {fileID: 4539793960890027306}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -91,6 +94,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6484037785941392889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4466380698543640895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c62856b7d6d0f40b82b9e0ee41f95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  attackRange: 5
+  sightRange: 20
+  timeBetweenAttacks: 3
+  atkDamage: 0
+  health: {fileID: 0}
+  playerController: {fileID: 0}
+--- !u!114 &6300461865296284695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4466380698543640895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133b23b5087681e4e9c72b258dbe5f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  startingHealth: 10
+  currentHealth: 0
+  isDead: 0
 --- !u!136 &2548144191586129405
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -141,3 +177,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!195 &4539793960890027306
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4466380698543640895}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 6
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

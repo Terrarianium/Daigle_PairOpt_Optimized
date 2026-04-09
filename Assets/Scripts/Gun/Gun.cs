@@ -8,14 +8,25 @@ public class Gun : MonoBehaviour
     public Transform enemy;
     private BulletSpawner bulletSpawner;
 
+    private float canShootTimer = .2f;
+
     private void Start()
     {
         bulletSpawner = GetComponent<BulletSpawner>();
     }
 
+    private void Update()
+    {
+        canShootTimer -= Time.deltaTime;
+    }
+
     public void OnShoot(InputAction.CallbackContext context)
     {
-        Shoot();
+        if(canShootTimer <= 0f)
+        {
+            Shoot();
+            canShootTimer = .2f;
+        }
     }
 
     void Shoot()

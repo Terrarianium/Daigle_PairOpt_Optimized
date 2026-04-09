@@ -1,0 +1,104 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class Enemy : MonoBehaviour
+{
+    [Range(0, 50)][SerializeField] float attackRange = 2, sightRange = 20, timeBetweenAttacks = 3;
+    [Range(0, 20)][SerializeField] int atkDamage = 5;
+
+    private NavMeshAgent navEnemy;
+    private Transform playerPos;
+    private bool isAttacking;
+
+    [SerializeField] Health health;
+    [SerializeField] PlayerController playerController;
+    public GameObject bullet;
+
+    private enum EnemyState
+    {
+        Chase,
+        Attack,
+        Idle
+    }
+
+    private void Start()
+    {
+        navEnemy = GetComponent<NavMeshAgent>();
+        playerPos = playerController.transform;
+    }
+
+    private void Update()
+    {
+        float distanceFromPlayer = Vector3.Distance(playerPos.position, transform.position);
+
+        EnemyState currentState = GetState(distanceFromPlayer);
+
+        switch (currentState)
+        {
+            case EnemyState.Chase:
+                isAttacking = false;
+                navEnemy.isStopped = false;
+                StopAllCoroutines();
+                ChasePlayer();
+                break;
+
+            case EnemyState.Attack:
+                navEnemy.isStopped = true;
+                StartCoroutine(AttackPlayer());
+                break;
+
+            case EnemyState.Idle:
+                navEnemy.isStopped = true;
+                break;
+        }
+    }
+
+    private EnemyState GetState(float distance)
+    {
+        if (health.isDead)
+            return EnemyState.Idle;
+
+        if (distance <= attackRange && !isAttacking)
+            return EnemyState.Attack;
+
+        if (distance <= sightRange && distance > attackRange)
+            return EnemyState.Chase;
+
+        return EnemyState.Idle;
+    }
+
+    private void ChasePlayer()
+    {
+        navEnemy.SetDestination(playerPos.position);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            health.TakeDamage(5);
+        }
+    }
+
+    private IEnumerator AttackPlayer()
+    {
+        isAttacking = true;
+
+        yield return new WaitForSeconds(timeBetweenAttacks);
+
+        Debug.Log("hit Player");
+        health.TakeDamage(atkDamage);
+
+        isAttacking = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+}

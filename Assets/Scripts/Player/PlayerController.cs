@@ -3,20 +3,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody rb;
-    public GameObject camHolder;
-    public float speed;
-    public float sensitivity;
-    public float maxForce;
+    [SerializeField] Rigidbody rb;
+    [SerializeField] GameObject camHolder;
+    [SerializeField] private float speed;
+    [SerializeField] private float sensitivity;
+    [SerializeField] private float maxForce;
     private Vector2 move, look;
     private float lookRotation;
 
-    public float jumpForce;
+    [SerializeField] float jumpForce;
 
-    public float playerHeight;
-    public LayerMask whatIsGround;
+    [SerializeField] private float playerHeight;
+    [SerializeField] LayerMask whatIsGround;
     public bool grounded;
-    public float groundDrag;
+    [SerializeField] private float groundDrag;
 
     public void OnMove(InputAction.CallbackContext context)
     {

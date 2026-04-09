@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 3247124624363055732}
   - component: {fileID: 1661732605249239188}
   m_Layer: 0
-  m_Name: Bulltet
-  m_TagString: Untagged
+  m_Name: Bullet
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,8 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a39f548a49fd8e49b269412da4031e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
-  speed: 20
-  turnRate: 720
 --- !u!54 &1661732605249239188
 Rigidbody:
   m_ObjectHideFlags: 0
