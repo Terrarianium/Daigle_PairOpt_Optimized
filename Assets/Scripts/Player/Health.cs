@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Health : MonoBehaviour
 {
@@ -6,25 +7,32 @@ public class Health : MonoBehaviour
 
     public bool isDead;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public event Action OnDeath;
+
+    void Awake()
     {
         currentHealth = startingHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int amount)
     {
+        if (isDead) return;
+
+        currentHealth -= amount;
+        Debug.Log(gameObject.name + " took damage. HP: " + currentHealth);
+
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
-            Debug.Log("Player dead");
+            Debug.Log(gameObject.name + " died");
+
+            OnDeath?.Invoke();
         }
     }
 
-    public void TakeDamage(int amount)
+    public void ResetHealth()
     {
-        currentHealth -= amount;
-        Debug.Log(gameObject.name + " took damage. HP: " + currentHealth);
+        isDead = false;
+        currentHealth = startingHealth;
     }
 }

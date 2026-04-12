@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Pool;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,9 +12,19 @@ public class Enemy : MonoBehaviour
     private Transform playerPos;
     private bool isAttacking;
 
-    private Health health;
-    [SerializeField] PlayerController playerController;
-    public GameObject bullet;
+    private Health playerHealth;
+    private Health enemyHealth;
+    private PlayerController playerController;
+
+    private IObjectPool<Enemy> enemyPool;
+    private bool isReleased;
+
+    public System.Action OnDeath;
+
+    public void SetPool(IObjectPool<Enemy> pool)
+    {
+        enemyPool = pool;
+    }
 
     private enum EnemyState
     {
@@ -25,13 +36,18 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        health = GetComponent<Health>();
+        navEnemy = GetComponent<NavMeshAgent>();
+        enemyHealth = gameObject.GetComponent<Health>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        navEnemy = GetComponent<NavMeshAgent>();
+        playerController = Object.FindFirstObjectByType<PlayerController>();
+        playerHealth = playerController.GetComponent<Health>();
         playerPos = playerController.transform;
+
+        isReleased = false;
+        isAttacking = false;
     }
 
     private void Update()
@@ -51,7 +67,8 @@ public class Enemy : MonoBehaviour
 
             case EnemyState.Attack:
                 navEnemy.isStopped = true;
-                StartCoroutine(AttackPlayer());
+                if (!isAttacking)
+                    StartCoroutine(AttackPlayer());
                 break;
 
             case EnemyState.Idle:
@@ -59,15 +76,14 @@ public class Enemy : MonoBehaviour
                 break;
 
             case EnemyState.Death:
-                Debug.Log("I am Dead makdfad");
-                Destroy(gameObject);
+                HandleDeath();
                 break;
         }
     }
 
     private EnemyState GetState(float distance)
     {
-        if (health.isDead)
+        if (enemyHealth.isDead)
             return EnemyState.Death;
 
         if (distance <= attackRange && !isAttacking)
@@ -91,21 +107,48 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Bullet"))
         {
             Debug.Log("Bullet hit enemy");
-            health.TakeDamage(5);
+            enemyHealth.TakeDamage(5);
         }
+    }
+
+    private void HandleDeath()
+    {
+        if (isReleased) return;
+
+        isReleased = true;
+
+        StopAllCoroutines();
+        navEnemy.isStopped = true;
+
+        OnDeath?.Invoke();
+        enemyPool.Release(this);
+    }
+
+    public void ResetEnemy()
+    {
+        enemyHealth.ResetHealth(); // you must implement or already have this
+        isReleased = false;
+        isAttacking = false;
+
+        StopAllCoroutines();
+        navEnemy.isStopped = false;
     }
 
     private IEnumerator AttackPlayer()
     {
         isAttacking = true;
 
-        yield return new WaitForSeconds(timeBetweenAttacks);
+        while (enemyHealth.isDead == false)
+        {
+            Debug.Log("hit Player");
+            playerHealth.TakeDamage(atkDamage);
 
-        Debug.Log("hit Player");
-        health.TakeDamage(atkDamage);
+            yield return new WaitForSeconds(timeBetweenAttacks);
+        }
 
         isAttacking = false;
     }
+
 
     private void OnDrawGizmosSelected()
     {
