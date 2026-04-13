@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour
 
     public System.Action OnDeath;
 
+    private UIManager uiManager;
+
     public void SetPool(IObjectPool<Enemy> pool)
     {
         enemyPool = pool;
@@ -44,6 +46,7 @@ public class Enemy : MonoBehaviour
     {
         playerController = Object.FindFirstObjectByType<PlayerController>();
         playerHealth = playerController.GetComponent<Health>();
+        uiManager = Object.FindFirstObjectByType<UIManager>();
         playerPos = playerController.transform;
 
         isReleased = false;
@@ -68,7 +71,8 @@ public class Enemy : MonoBehaviour
             case EnemyState.Attack:
                 navEnemy.isStopped = true;
                 if (!isAttacking)
-                    StartCoroutine(AttackPlayer());
+                    isAttacking = true;
+                    uiManager.Restart();
                 break;
 
             case EnemyState.Idle:
@@ -132,21 +136,6 @@ public class Enemy : MonoBehaviour
 
         StopAllCoroutines();
         navEnemy.isStopped = false;
-    }
-
-    private IEnumerator AttackPlayer()
-    {
-        isAttacking = true;
-
-        while (enemyHealth.isDead == false)
-        {
-            Debug.Log("hit Player");
-            playerHealth.TakeDamage(atkDamage);
-
-            yield return new WaitForSeconds(timeBetweenAttacks);
-        }
-
-        isAttacking = false;
     }
 
 
