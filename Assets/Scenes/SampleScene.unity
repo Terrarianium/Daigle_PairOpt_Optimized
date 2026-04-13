@@ -574,7 +574,7 @@ Transform:
   m_GameObject: {fileID: 107703916}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -767,9 +767,10 @@ MonoBehaviour:
   - {fileID: 123874645}
   - {fileID: 213837252}
   - {fileID: 88368514}
-  timeBetweenSpawns: 1
+  timeBetweenSpawns: 4
   enemyPrefab: {fileID: 6484037785941392889, guid: 26fb9fbbbab90c1449852cae72e32df8, type: 3}
   maxAlive: 5
+  ui: {fileID: 426064025}
 --- !u!4 &252764741
 Transform:
   m_ObjectHideFlags: 0
@@ -1320,6 +1321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Timer
   text: {fileID: 532614406}
   time: 0
+  ui: {fileID: 426064025}
 --- !u!114 &426064025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1335,7 +1337,7 @@ MonoBehaviour:
   deathScreen: {fileID: 1823065284}
   startScreen: {fileID: 2117476297}
   playerController: {fileID: 2128537970}
-  startTimer: 0
+  startGame: 0
 --- !u!1 &446657885
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,7 +2195,7 @@ Transform:
   m_GameObject: {fileID: 589979452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.93, y: 3.63, z: 34.99}
+  m_LocalPosition: {x: -15.93, y: 2.73, z: 34.99}
   m_LocalScale: {x: 5, y: 1.5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3320,7 +3322,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 963884065}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 426064025}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &963884065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4545,7 +4559,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1522631630}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 426064025}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: CloseStartScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1522631630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4612,7 +4638,7 @@ Transform:
   m_GameObject: {fileID: 1531752094}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.93, y: 3.63, z: -34.99}
+  m_LocalPosition: {x: 15.93, y: 2.73, z: -34.99}
   m_LocalScale: {x: 5, y: 1.5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5747,6 +5773,6 @@ SceneRoots:
   - {fileID: 252764741}
   - {fileID: 1241615959}
   - {fileID: 1610414619}
-  - {fileID: 86594702}
   - {fileID: 145850098}
   - {fileID: 107703917}
+  - {fileID: 86594702}

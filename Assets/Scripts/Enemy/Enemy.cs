@@ -5,8 +5,7 @@ using UnityEngine.Pool;
 
 public class Enemy : MonoBehaviour
 {
-    [Range(0, 50)][SerializeField] float attackRange = 2, sightRange = 20, timeBetweenAttacks = 3;
-    [Range(0, 20)][SerializeField] int atkDamage = 5;
+    [Range(0, 50)][SerializeField] float attackRange = .5f, sightRange = 20;
 
     private NavMeshAgent navEnemy;
     private Transform playerPos;
@@ -72,7 +71,7 @@ public class Enemy : MonoBehaviour
                 navEnemy.isStopped = true;
                 if (!isAttacking)
                     isAttacking = true;
-                    uiManager.Restart();
+                    uiManager.ShowDeathScreen();
                 break;
 
             case EnemyState.Idle:

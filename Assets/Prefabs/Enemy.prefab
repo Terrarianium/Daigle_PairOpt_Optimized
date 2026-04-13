@@ -106,10 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c62856b7d6d0f40b82b9e0ee41f95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  attackRange: 5
+  attackRange: 2
   sightRange: 20
-  timeBetweenAttacks: 3
-  atkDamage: 5
 --- !u!114 &6300461865296284695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +183,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 6
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

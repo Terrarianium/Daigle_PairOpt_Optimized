@@ -5,12 +5,12 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text; 
     [SerializeField] float time; 
-    //[SerializeField] UIManager ui;
+    [SerializeField] UIManager ui;
 
     // Update is called once per frame
     void Update()
     {
-        //if (ui.startTimer) 
+        if (ui.startGame) 
         { 
             time += Time.deltaTime; 
             UpdateText(); 

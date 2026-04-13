@@ -6,10 +6,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject deathScreen; 
     [SerializeField] GameObject startScreen; 
     [SerializeField] PlayerController playerController; 
-    public bool startTimer; private void Start() 
+    public bool startGame; 
+    
+    private void Start() 
     { 
         ShowStartScreen();
-        //playerController = Object.FindFirstObjectByType<PlayerController>();
     } 
     
     public void ShowStartScreen() 
@@ -23,7 +24,7 @@ public class UIManager : MonoBehaviour
     public void CloseStartScreen() 
     { 
         startScreen.SetActive(false); 
-        startTimer = true; 
+        startGame = true; 
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false; 
     } 
@@ -31,7 +32,7 @@ public class UIManager : MonoBehaviour
     public void ShowDeathScreen() 
     { 
         deathScreen.SetActive(true); 
-        startTimer = false; 
+        startGame = false; 
         Cursor.lockState = CursorLockMode.None; 
         Cursor.visible = true; 
     } 

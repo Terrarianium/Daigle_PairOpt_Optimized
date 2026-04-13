@@ -13,6 +13,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] int maxAlive = 5;
     private int currentAlive = 0;
 
+    [SerializeField] UIManager ui;
+
     private void Awake()
     {
         enemyPool = new ObjectPool<Enemy>(CreateEnemy, OnGet, OnRelease, OnDestroyEnemy, collectionCheck: false, defaultCapacity: 5, maxSize: 5);
@@ -58,7 +60,7 @@ public class EnemySpawner : MonoBehaviour
     {
         timeSinceLastSpawn -= Time.deltaTime;
 
-        if (timeSinceLastSpawn <= 0f && currentAlive < maxAlive)
+        if (ui.startGame && timeSinceLastSpawn <= 0f && currentAlive < maxAlive)
         {
             enemyPool.Get();
             currentAlive++;
