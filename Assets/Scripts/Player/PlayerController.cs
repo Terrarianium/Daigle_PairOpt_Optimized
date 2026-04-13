@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public bool grounded;
     [SerializeField] private float groundDrag;
 
+    private float yRotation;
+
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
@@ -76,13 +78,19 @@ public class PlayerController : MonoBehaviour
 
     public void Look()
     {
-        //Turn
-        transform.Rotate(Vector3.up * look.x * sensitivity);
+        // Mouse input
+        float mouseX = look.x * sensitivity;
+        float mouseY = look.y * sensitivity;
 
-        //Look
-        lookRotation += (-look.y * sensitivity);
-        lookRotation = Mathf.Clamp(lookRotation, -90, 90);
-        camHolder.transform.eulerAngles = new Vector3(lookRotation, camHolder.transform.eulerAngles.y, camHolder.transform.eulerAngles.z);
+        // Yaw (player rotates left/right)
+        yRotation += mouseX;
+        transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+        // Pitch (camera up/down)
+        lookRotation -= mouseY;
+        lookRotation = Mathf.Clamp(lookRotation, -90f, 90f);
+
+        camHolder.transform.localRotation = Quaternion.Euler(lookRotation, 0f, 0f);
     }
 
     public void Jump()
