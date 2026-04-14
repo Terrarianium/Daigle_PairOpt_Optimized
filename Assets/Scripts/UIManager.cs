@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     public bool startGame; 
     
     private void Start() 
-    { 
+    {
         ShowStartScreen();
     } 
     
@@ -37,12 +37,6 @@ public class UIManager : MonoBehaviour
         startGame = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-    }
-
-    public void CloseWinScreen()
-    {
-        winScreen.SetActive(false);
-        ShowDeathScreen();
     }
 
     public void ShowDeathScreen() 
