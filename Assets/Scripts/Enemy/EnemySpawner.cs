@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,9 +12,7 @@ public class EnemySpawner : MonoBehaviour
     private IObjectPool<Enemy> enemyPool;
 
     [SerializeField] int maxAlive = 5;
-    private int currentAlive = 0;
-
-    [SerializeField] UIManager ui;
+    public int currentAlive = 0;
 
     private void Awake()
     {
@@ -41,14 +40,7 @@ public class EnemySpawner : MonoBehaviour
         Enemy enemy = Instantiate(enemyPrefab);
         enemy.SetPool(enemyPool);
 
-        enemy.OnDeath += HandleEnemyDeath;
-
         return enemy;
-    }
-
-    private void HandleEnemyDeath()
-    {
-        currentAlive--;
     }
 
     private void OnDestroyEnemy(Enemy enemy)
@@ -56,15 +48,43 @@ public class EnemySpawner : MonoBehaviour
         Destroy(enemy.gameObject);
     }
 
-    void Update()
+    /* Subscribe and unsubscribe to the OnActiveGame event.
+     */
+    private void OnEnable()
     {
-        timeSinceLastSpawn -= Time.deltaTime;
+        UIManager.OnActiveGame += HandleActiveGame;
+    }
+    private void OnDisable()
+    {
+        UIManager.OnActiveGame -= HandleActiveGame;
+    }
 
-        if (ui.startGame && timeSinceLastSpawn <= 0f && currentAlive < maxAlive)
+    /* Start or stop spawning enemies based on the game state.
+     */
+    private void HandleActiveGame(bool isActive)
+    {
+        if (!isActive)
         {
-            enemyPool.Get();
-            currentAlive++;
-            timeSinceLastSpawn = timeBetweenSpawns;
+            StopAllCoroutines();
+        }
+        else
+        {
+            StartCoroutine(SpawnEnemies());
+        }
+    }
+
+    /* Coroutine that spawns enemies at regular intervals while the game is active and the maximum number of alive enemies has not been reached.
+     */
+    private IEnumerator SpawnEnemies()
+    {
+        while (true)
+        {
+            if (currentAlive < maxAlive)
+            {
+                enemyPool.Get();
+                currentAlive++;
+            }
+            yield return new WaitForSeconds(timeBetweenSpawns);
         }
     }
 }

@@ -7,8 +7,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject startScreen; 
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject hTP;
-    [SerializeField] PlayerController playerController; 
-    public bool startGame; 
+    [SerializeField] PlayerController playerController;
+
+    // Use event to notify other scripts when the game is active or not instead of bool
+    public delegate void ActiveGame(bool bIsActive); 
+    public static event ActiveGame OnActiveGame;
     
     private void Start() 
     {
@@ -27,8 +30,8 @@ public class UIManager : MonoBehaviour
 
     public void CloseStartScreen() 
     { 
-        startScreen.SetActive(false); 
-        startGame = true; 
+        startScreen.SetActive(false);
+        OnActiveGame?.Invoke(true); // Call active game as true
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false; 
     } 
@@ -42,15 +45,15 @@ public class UIManager : MonoBehaviour
     public void ShowWinScreen()
     {
         winScreen.SetActive(true);
-        startGame = false;
+        OnActiveGame?.Invoke(false); // Call active game as false
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
     public void ShowDeathScreen() 
     { 
-        deathScreen.SetActive(true); 
-        startGame = false; 
+        deathScreen.SetActive(true);
+        OnActiveGame?.Invoke(false);  // Call active game as false
         Cursor.lockState = CursorLockMode.None; 
         Cursor.visible = true; 
     } 
