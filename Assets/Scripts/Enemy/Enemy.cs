@@ -54,9 +54,9 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        float distanceFromPlayer = Vector3.Distance(playerPos.position, transform.position);
+        float distanceFromPlayerSquared = (playerPos.position - transform.position).sqrMagnitude; // Changed distance to use squared distance
 
-        EnemyState currentState = GetState(distanceFromPlayer);
+        EnemyState currentState = GetState(distanceFromPlayerSquared);
 
         switch (currentState)
         {
@@ -89,10 +89,10 @@ public class Enemy : MonoBehaviour
         if (enemyHealth.isDead)
             return EnemyState.Death;
 
-        if (distance <= attackRange && !isAttacking)
+        if (distance <= attackRange * attackRange && !isAttacking) // Use squared distance
             return EnemyState.Attack;
 
-        if (distance <= sightRange && distance > attackRange)
+        if (distance <= sightRange * sightRange && distance > attackRange * attackRange) // Use squared distance
             return EnemyState.Chase;
 
         return EnemyState.Idle;
