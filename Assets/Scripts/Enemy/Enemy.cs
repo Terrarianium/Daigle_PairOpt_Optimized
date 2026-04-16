@@ -50,8 +50,6 @@ public class Enemy : MonoBehaviour
 
         isReleased = false;
         isAttacking = false;
-
-        UIManager.OnActiveGame
     }
 
     private void Update()
